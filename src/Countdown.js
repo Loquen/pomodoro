@@ -5,7 +5,13 @@ class Countdown extends Component {
 
   constructor() {
     super();
-    this.state = { time: {}, seconds: 1500 }; // Set intial timer to 1500s or 25min
+    // Set intial timer to 1500s or 25min, break of 5min
+    // and final break of 15min, with one cycle lasting 4 pomodoros
+    this.state = { time: {}, 
+    			   seconds: 1500,
+    			   break: 300,
+    			   finalBreak: 900, 
+    			   pomodoro: 1 }; 
     this.timer = 0;
     this.startTimer = this.startTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
@@ -38,19 +44,21 @@ class Countdown extends Component {
     this.setState({ time: timeLeftVar });
   }
 
-  // Begin countdown timer if the countdown should go 
-  // to zero and there seconds on the clock
+  // Begin countdown timer if there are seconds on the clock
   startTimer() {
-    if (this.timer == 0 && this.state.seconds > 0) {
+    if (this.state.seconds > 0) {
       this.timer = setInterval(this.countDown, 1000);
     }
   }
 
   // Stop the Timer at the current time 
   stopTimer() {
+  	
   	clearInterval(this.timer);
+
   }
 
+  // 
   countDown() {
     // Remove one second, set state so a re-render happens.
     let seconds = this.state.seconds - 1;
@@ -62,7 +70,27 @@ class Countdown extends Component {
     // Check if we're at zero.
     if (seconds == 0) { 
       clearInterval(this.timer);
+      //this.setState(pomodoros, 1)
+      //pomodoroPhase();
+
+      // For the next phase: instead of clearing the timer
+      // at 0 we will call pomodoroPhase(). This will determine
+      // what phase of the timer we're in. 
+      // One full cycle: 1(25) > 2(5) > 3(25) > 4(5) > 
+      //                 5(25) > 6(5) > 7(25) > 8(15) > end
     }
+  }
+
+  pomodoroPhase() {
+  	// if the pomo is even then we are on break
+  	if (this.pomodoros % 2 == 0  && this.pomodoros != 8) {
+  		// reset clock to break time: 5min
+  	} else if (this.pomodoros == 8) {
+  		// final pomo has finished
+  		// clearInterval(this.timer);
+  	}
+  	// Still need to add functionality to reset to pomo set
+  	// and finally one more to finish the whole sequence
   }
 
   render() {
