@@ -7,13 +7,14 @@ class Countdown extends Component {
     super();
     // Set intial timer to 1500s or 25min, break of 5min
     // and final break of 15min, with one cycle lasting 4 pomodoros
-    this.state = { time: {}, 
-    			   seconds: 1500,
-    			   break: 300,
-    			   finalBreak: 900, 
-    			   pomodoro: 1,
-    			   isRunning: false
-    			 };  
+    this.initialState = { time: {}, 
+		    			  seconds: 1500,
+		    			  break: 300,
+		    			  finalBreak: 900, 
+		    			  pomodoro: 1,
+		    			  isRunning: false
+    			 		};  
+    this.state = { ...this.initialState }; // to preserve the initial state
     this.timer = 0;
     this.handleTimer = this.handleTimer.bind(this);
     this.startTimer = this.startTimer.bind(this);
@@ -59,13 +60,11 @@ class Countdown extends Component {
 
   // Stop the Timer at the current time 
   stopTimer() {
-  	
-  	clearInterval(this.timer);
   	this.setState({ isRunning: false });
-  	// Once stopped we need to change the button to 'reset' 
-
+  	clearInterval(this.timer);
   }
 
+  // Handle action of start/stop button depending on state 'isRunning'
   handleTimer() {
   	if(this.state.isRunning) {
   		this.stopTimer();
@@ -77,10 +76,8 @@ class Countdown extends Component {
 
   // Reset the whole pomodoro to beginning
   resetTimer() {
-
-  	// Change pomodoro to 1 again
-  	// Reset timer to 25
-
+  	this.setState( this.initialState );
+  	this.componentDidMount();
   }
 
   // 
