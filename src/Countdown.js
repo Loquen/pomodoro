@@ -11,10 +11,14 @@ class Countdown extends Component {
     			   seconds: 1500,
     			   break: 300,
     			   finalBreak: 900, 
-    			   pomodoro: 1 }; 
+    			   pomodoro: 1,
+    			   isRunning: false
+    			 };  
     this.timer = 0;
+    this.handleTimer = this.handleTimer.bind(this);
     this.startTimer = this.startTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
     this.countDown = this.countDown.bind(this);
   }
 
@@ -44,9 +48,11 @@ class Countdown extends Component {
     this.setState({ time: timeLeftVar });
   }
 
+  
   // Begin countdown timer if there are seconds on the clock
   startTimer() {
     if (this.state.seconds > 0) {
+      this.setState({ isRunning: true });
       this.timer = setInterval(this.countDown, 1000);
     }
   }
@@ -55,6 +61,25 @@ class Countdown extends Component {
   stopTimer() {
   	
   	clearInterval(this.timer);
+  	this.setState({ isRunning: false });
+  	// Once stopped we need to change the button to 'reset' 
+
+  }
+
+  handleTimer() {
+  	if(this.state.isRunning) {
+  		this.stopTimer();
+  	} else {
+  		this.startTimer();
+  	}
+  }
+
+
+  // Reset the whole pomodoro to beginning
+  resetTimer() {
+
+  	// Change pomodoro to 1 again
+  	// Reset timer to 25
 
   }
 
@@ -81,11 +106,13 @@ class Countdown extends Component {
     }
   }
 
+
+  // Moving timer through all 8 segments of the Pomodoro cycle
   pomodoroPhase() {
   	// if the pomo is even then we are on break
-  	if (this.pomodoros % 2 == 0  && this.pomodoros != 8) {
+  	if (this.pomodoro % 2 == 0  && this.pomodoro != 8) {
   		// reset clock to break time: 5min
-  	} else if (this.pomodoros == 8) {
+  	} else if (this.pomodoro == 8) {
   		// final pomo has finished
   		// clearInterval(this.timer);
   	}
@@ -97,12 +124,12 @@ class Countdown extends Component {
     return(
       <div>
         
-        <div className="Countdown">M:{this.state.time.m}  S:{this.state.time.s} </div>
+        <div className="Countdown">M: {this.state.time.m} S: {this.state.time.s} </div>
         <div className="Button">
-        	<button onClick={this.startTimer}>Start</button>
+        	<button onClick={this.handleTimer}>{this.state.isRunning ? 'Stop' : 'Start'}</button>
         	&nbsp;
         	&nbsp;
-        	<button onClick={this.stopTimer}>Stop</button>
+        	<button onClick={this.resetTimer}>Reset</button>
         </div>
       </div>
     );
