@@ -8,9 +8,10 @@ class Countdown extends Component {
     // Set intial timer to 1500s or 25min, break of 5min
     // and final break of 15min, with one cycle lasting 4 pomodoros
     this.initialState = { time: {}, 
-		    			  seconds: 1500,
-		    			  break: 300,
-		    			  finalBreak: 900, 
+		    			  seconds: 10,
+		    			  fullpomo: 10,
+		    			  br: 3,
+		    			  finalBreak: 5, 
 		    			  pomodoro: 1,
 		    			  isRunning: false
     			 		};  
@@ -76,6 +77,11 @@ class Countdown extends Component {
 
   // Reset the whole pomodoro to beginning
   resetTimer() {
+  	// Stop the timer before trying to reset
+  	if(this.state.isRunning){
+  		this.stopTimer();
+  	}
+
   	this.setState( this.initialState );
   	this.componentDidMount();
   }
@@ -86,14 +92,18 @@ class Countdown extends Component {
     let seconds = this.state.seconds - 1;
     this.setState({
       time: this.secondsToTime(seconds),
-      seconds: seconds,
+      seconds: seconds
     });
     
     // Check if we're at zero.
     if (seconds == 0) { 
+      
+      // Play Sound!
       clearInterval(this.timer);
-      //this.setState(pomodoros, 1)
-      //pomodoroPhase();
+      // Increment the pomodoro count to track which phase we are in.
+  	  this.setState({ pomodoro: this.state.pomodoro + 1 });
+      
+      this.pomodoroPhase();
 
       // For the next phase: instead of clearing the timer
       // at 0 we will call pomodoroPhase(). This will determine
@@ -107,14 +117,49 @@ class Countdown extends Component {
   // Moving timer through all 8 segments of the Pomodoro cycle
   pomodoroPhase() {
   	// if the pomo is even then we are on break
-  	if (this.pomodoro % 2 == 0  && this.pomodoro != 8) {
-  		// reset clock to break time: 5min
-  	} else if (this.pomodoro == 8) {
-  		// final pomo has finished
-  		// clearInterval(this.timer);
+  	if (this.state.pomodoro % 2 == 0 && this.state.pomodoro <= 8) {
+  		if(this.state.pomodoro == 8){
+  			// run the final break of 15min
+  			console.log("final break");
+  			this.setState({
+  				time: this.secondsToTime(this.state.finalBreak),
+  			  seconds: this.state.finalBreak
+  			});
+  			this.startTimer();
+  		} else {
+  			// run the break of 5min
+  			console.log("break");
+  			console.log(this.state.pomodoro);
+  			this.setState({
+  				time: this.secondsToTime(this.state.br),
+  				seconds: this.state.br
+  			});
+  			this.startTimer();
+  			
   	}
-  	// Still need to add functionality to reset to pomo set
-  	// and finally one more to finish the whole sequence
+  		
+  	} else if (this.state.pomodoro % 2 != 0) { // odd pomo and we are on a pomo
+  		if(this.state.pomodoro > 8){
+  			// final pomo has finished
+  			console.log("Full pomo cycle has completed");
+  			this.resetTimer();
+  		} else {
+  			// reset pomo to 25 min
+  			console.log("next pomo");
+  			console.log(this.state.pomodoro);
+  			this.setState({
+  				time: this.secondsToTime(this.state.fullpomo),
+  				seconds: this.state.fullpomo
+  			});
+  			this.startTimer();
+
+  		}
+  		
+  	}
+  	// We need to create a new seconds for the pomodoro group with the 1500 value
+  	// that will be used when we reset to the next pomo phase 
+  	// Isolating it so that we can update the actual seconds to br, finalBreak, 
+  	// and pomo
   }
 
   render() {
