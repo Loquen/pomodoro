@@ -8,10 +8,10 @@ class Countdown extends Component {
     // Set intial timer to 1500s or 25min, break of 5min
     // and final break of 15min, with one cycle lasting 4 pomodoros
     this.initialState = { time: {}, 
-		    			  seconds: 10,
-		    			  fullpomo: 10,
-		    			  br: 3,
-		    			  finalBreak: 5, 
+		    			  seconds: 1500,
+		    			  fullpomo: 1500,
+		    			  br: 300,
+		    			  finalBreak: 900, 
 		    			  pomodoro: 1,
 		    			  isRunning: false
     			 		};  
