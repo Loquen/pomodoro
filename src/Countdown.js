@@ -18,7 +18,7 @@ class Countdown extends Component {
     this.state = { ...this.initialState }; // to preserve the initial state
     this.timer = 0;
     this.handleTimer = this.handleTimer.bind(this);
-    this.startTimer = this.startTimer.bind(this);
+    this.startTimer = this.startTimer.bind(this);//https://reactjsexample.com/tag/player/
     this.stopTimer = this.stopTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.countDown = this.countDown.bind(this);
@@ -26,7 +26,7 @@ class Countdown extends Component {
 
   // Converts the Time from seconds to H, M, S for display purposes
   secondsToTime(secs){
-    let hours = Math.floor(secs / (60 * 60)); // Seconds divided by 360
+    let hours = Math.floor(secs / (60 * 60)); // Seconds divided by 3600
 
     let divisor_for_minutes = secs % (60 * 60); // Get the remainder of mins after hours
     let minutes = Math.floor(divisor_for_minutes / 60); // Remaining seconds divided by 60
@@ -82,8 +82,12 @@ class Countdown extends Component {
   		this.stopTimer();
   	}
 
-  	this.setState( this.initialState );
-  	this.componentDidMount();
+  	this.setState( this.initialState, () => {
+      console.log("resetting timer");
+      this.componentDidMount();
+    });
+
+  	
   }
 
   // 
@@ -99,18 +103,31 @@ class Countdown extends Component {
     if (seconds == 0) { 
       
       // Play Sound!
+      //this.playSound();
       clearInterval(this.timer);
       // Increment the pomodoro count to track which phase we are in.
   	  this.setState({ pomodoro: this.state.pomodoro + 1 });
       
       this.pomodoroPhase();
-
-      // For the next phase: instead of clearing the timer
-      // at 0 we will call pomodoroPhase(). This will determine
-      // what phase of the timer we're in. 
-      // One full cycle: 1(25) > 2(5) > 3(25) > 4(5) > 
-      //                 5(25) > 6(5) > 7(25) > 8(15) > end
     }
+  }
+
+  // Play a sound on timer countdown reaching zero
+  playSound() {
+    // try{
+    //   const audio = document.createElement('audio');
+    //   audio.src = ; //load the audio source file
+    //   audio.play; //play the audio file
+    // } catch (error) {
+    //   console.error(error);
+    // }
+
+    // alert = (tSc) => {
+    //   this.myRef = React.createRef(); 
+    //   if(tSc === timerStates.COMPLETE){
+    //     return( <audio ref={this.myRef} src={soundfile} autoPlay/> )
+    //   }
+    // }
   }
 
 
@@ -135,9 +152,7 @@ class Countdown extends Component {
   				seconds: this.state.br
   			});
   			this.startTimer();
-  			
-  	}
-  		
+  	  }
   	} else if (this.state.pomodoro % 2 != 0) { // odd pomo and we are on a pomo
   		if(this.state.pomodoro > 8){
   			// final pomo has finished
@@ -152,14 +167,8 @@ class Countdown extends Component {
   				seconds: this.state.fullpomo
   			});
   			this.startTimer();
-
   		}
-  		
   	}
-  	// We need to create a new seconds for the pomodoro group with the 1500 value
-  	// that will be used when we reset to the next pomo phase 
-  	// Isolating it so that we can update the actual seconds to br, finalBreak, 
-  	// and pomo
   }
 
   render() {
