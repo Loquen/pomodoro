@@ -8,10 +8,10 @@ class Countdown extends Component {
     // Set intial timer to 1500s or 25min, break of 5min
     // and final break of 15min, with one cycle lasting 4 pomodoros
     this.initialState = { time: {}, 
-		    			  seconds: 1500,
-		    			  fullpomo: 1500,
-		    			  br: 300,
-		    			  finalBreak: 900, 
+		    			  seconds: 10,
+		    			  fullpomo: 10,
+		    			  br: 8,
+		    			  finalBreak: 8, 
 		    			  pomodoro: 1,
 		    			  isRunning: false
     			 		};  
@@ -100,10 +100,10 @@ class Countdown extends Component {
     });
     
     // Check if we're at zero.
-    if (seconds == 0) { 
+    if (seconds === 0) { 
       
       // Play Sound!
-      //this.playSound();
+      this.playSound();
       clearInterval(this.timer);
       // Increment the pomodoro count to track which phase we are in.
   	  this.setState({ pomodoro: this.state.pomodoro + 1 });
@@ -114,28 +114,16 @@ class Countdown extends Component {
 
   // Play a sound on timer countdown reaching zero
   playSound() {
-    // try{
-    //   const audio = document.createElement('audio');
-    //   audio.src = ; //load the audio source file
-    //   audio.play; //play the audio file
-    // } catch (error) {
-    //   console.error(error);
-    // }
-
-    // alert = (tSc) => {
-    //   this.myRef = React.createRef(); 
-    //   if(tSc === timerStates.COMPLETE){
-    //     return( <audio ref={this.myRef} src={soundfile} autoPlay/> )
-    //   }
-    // }
+    console.log("playing sound");
+    document.getElementById('bell').play();
   }
 
 
   // Moving timer through all 8 segments of the Pomodoro cycle
   pomodoroPhase() {
   	// if the pomo is even then we are on break
-  	if (this.state.pomodoro % 2 == 0 && this.state.pomodoro <= 8) {
-  		if(this.state.pomodoro == 8){
+  	if (this.state.pomodoro % 2 === 0 && this.state.pomodoro <= 8) {
+  		if(this.state.pomodoro === 8){
   			// run the final break of 15min
   			console.log("final break");
   			this.setState({
@@ -153,7 +141,7 @@ class Countdown extends Component {
   			});
   			this.startTimer();
   	  }
-  	} else if (this.state.pomodoro % 2 != 0) { // odd pomo and we are on a pomo
+  	} else if (this.state.pomodoro % 2 !== 0) { // odd pomo and we are on a pomo
   		if(this.state.pomodoro > 8){
   			// final pomo has finished
   			console.log("Full pomo cycle has completed");
@@ -181,6 +169,9 @@ class Countdown extends Component {
         	&nbsp;
         	&nbsp;
         	<button onClick={this.resetTimer}>Reset</button>
+        </div>
+        <div>
+          <audio id="bell" ref="audio_tag" src="https://upload.wikimedia.org/wikipedia/commons/1/15/Bicycle-bell.wav"/>
         </div>
       </div>
     );
