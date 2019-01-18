@@ -8,23 +8,23 @@ class Countdown extends Component {
     // Set intial timer to 1500s or 25min, break of 5min
     // and final break of 15min, with one cycle lasting 4 pomodoros
     this.initialState = { time: {}, 
-		    			  seconds: 10,
-		    			  fullpomo: 10,
-		    			  br: 8,
-		    			  finalBreak: 8, 
+		    			  seconds: 1500,
+		    			  fullpomo: 1500,
+		    			  br: 300,
+		    			  finalBreak: 900, 
 		    			  pomodoro: 1,
 		    			  isRunning: false
     			 		};  
     this.state = { ...this.initialState }; // to preserve the initial state
     this.timer = 0;
     this.handleTimer = this.handleTimer.bind(this);
-    this.startTimer = this.startTimer.bind(this);//https://reactjsexample.com/tag/player/
+    this.startTimer = this.startTimer.bind(this);
     this.stopTimer = this.stopTimer.bind(this);
     this.resetTimer = this.resetTimer.bind(this);
     this.countDown = this.countDown.bind(this);
   }
 
-  // Converts the Time from seconds to H, M, S for display purposes
+  // Converts the Time from seconds to H, M, S for display
   secondsToTime(secs){
     let hours = Math.floor(secs / (60 * 60)); // Seconds divided by 3600
 
@@ -68,8 +68,10 @@ class Countdown extends Component {
   // Handle action of start/stop button depending on state 'isRunning'
   handleTimer() {
   	if(this.state.isRunning) {
+      console.log("Stopping timer");
   		this.stopTimer();
   	} else {
+      console.log("Starting timer");
   		this.startTimer();
   	}
   }
@@ -83,14 +85,14 @@ class Countdown extends Component {
   	}
 
   	this.setState( this.initialState, () => {
-      console.log("resetting timer");
+      console.log("Resetting timer");
       this.componentDidMount();
     });
 
   	
   }
 
-  // 
+  // Perform countdown action
   countDown() {
     // Remove one second, set state so a re-render happens.
     let seconds = this.state.seconds - 1;
@@ -112,10 +114,10 @@ class Countdown extends Component {
     }
   }
 
-  // Play a sound on timer countdown reaching zero
+  // Play a sound 
   playSound() {
     console.log("playing sound");
-    document.getElementById('bell').play();
+    document.getElementById('bell').play(); // Grab audio element and play it
   }
 
 
