@@ -1,3 +1,9 @@
+This is a basic Pomodoro Timer for time management. It works with a work period of 25 mins followed by a 5 min break. After four work periods a 15 min break will follow. That completes a full cycle of the Pomodoro Timer. To make best use of this app you should focus on a single task during the 25 min period, if you have ideas of other things you need to do write them down and return to the task at hand. This will help you focus on exactly what you need to do. I have build this as a test project as I continue to teach myself React.
+
+Enjoy!
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
