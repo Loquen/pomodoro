@@ -164,12 +164,12 @@ class Countdown extends Component {
   render() {
     return(
       <div>
-        
-        <div className="Countdown">M: {this.state.time.m} S: {this.state.time.s} </div>
+        <div className="Countdown">
+          <span className="timeValue">M: {this.state.time.m}</span>
+          <span className="timeValue"> S: {this.state.time.s} </span>
+        </div>
         <div className="Button">
         	<button onClick={this.handleTimer}>{this.state.isRunning ? 'Stop' : 'Start'}</button>
-        	&nbsp;
-        	&nbsp;
         	<button onClick={this.resetTimer}>Reset</button>
         </div>
         <div>
