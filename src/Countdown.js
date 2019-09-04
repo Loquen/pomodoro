@@ -17,11 +17,6 @@ class Countdown extends Component {
     			 		};  
     this.state = { ...this.initialState }; // to preserve the initial state
     this.timer = 0;
-    this.handleTimer = this.handleTimer.bind(this);
-    this.startTimer = this.startTimer.bind(this);
-    this.stopTimer = this.stopTimer.bind(this);
-    this.resetTimer = this.resetTimer.bind(this);
-    this.countDown = this.countDown.bind(this);
   }
 
   // Converts the Time from seconds to H, M, S for display
@@ -52,7 +47,7 @@ class Countdown extends Component {
 
   
   // Begin countdown timer if there are seconds on the clock
-  startTimer() {
+  startTimer = () => {
     if (this.state.seconds > 0) {
       this.setState({ isRunning: true });
       this.timer = setInterval(this.countDown, 1000);
@@ -60,13 +55,13 @@ class Countdown extends Component {
   }
 
   // Stop the Timer at the current time 
-  stopTimer() {
+  stopTimer = () => {
   	this.setState({ isRunning: false });
   	clearInterval(this.timer);
   }
 
   // Handle action of start/stop button depending on state 'isRunning'
-  handleTimer() {
+  handleTimer = () => {
   	if(this.state.isRunning) {
       console.log("Stopping timer");
   		this.stopTimer();
@@ -78,7 +73,7 @@ class Countdown extends Component {
 
 
   // Reset the whole pomodoro to beginning
-  resetTimer() {
+  resetTimer = () => {
   	// Stop the timer before trying to reset
   	if(this.state.isRunning){
   		this.stopTimer();
@@ -93,7 +88,7 @@ class Countdown extends Component {
   }
 
   // Perform countdown action
-  countDown() {
+  countDown = () => {
     // Remove one second, set state so a re-render happens.
     let seconds = this.state.seconds - 1;
     this.setState({
